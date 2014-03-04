@@ -73,9 +73,9 @@ public abstract class ProtocolParser {
 	 */
 	public abstract AbstractTestPlan readJSONFileTestPlan(String url);
 	
-	public AbstractTest readJSONStringTest(String values) {
+	public AbstractTest readJSONStringTest(Object values) {
 		return null;
 	}
 	
-	public abstract AbstractInstruction readJSONStringInstruction(String values);
+	public abstract AbstractInstruction readJSONStringInstruction(Object values);
 }
