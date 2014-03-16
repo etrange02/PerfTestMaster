@@ -5,28 +5,51 @@ package controls.ctestplanmanagement.interfaces;
 
 import java.util.List;
 
-import controls.cslavemanagement.interfaces.ISlave;
 import controls.ctestplanmanagement.AbstractMonitoredTest;
-import shared.ITest;
 
 
-/** 
- * <!-- begin-UML-doc -->
- * <!-- end-UML-doc -->
- * @author Etrange02
- * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+/**
+ * 
+ * @author David Lecoconnier david.lecoconnier@gmail.com
+ * @author Jean-Luc Amitousa-Mankoy jeanluc.amitousa.mankoy@gmail.com
+ * @version 1.0
  */
 public interface ITestPlan {
 	
+	/**
+	 * Returns the name of the plan test. Useful to store the file name
+	 * @return the name
+	 */
 	public String getName();
 
+	/**
+	 * Returns a list of tests created by the user
+	 * @return a list
+	 */
 	public List<AbstractMonitoredTest> getTests();
 
+	/**
+	 * Returns the tested port
+	 * @return the port
+	 */
 	public int getPort();
 	
+	/**
+	 * Turns the test plan into a JSON string
+	 * @return a JSON string
+	 */
 	public String writeJSONString();
-	
-	public List<ITest> getTest();
 
-	public List<ISlave> getTargets();
+	/**
+	 * Returns the list of targets (which is the tested server)
+	 * @return a list
+	 */
+	public List<String> getTargets();
+	
+	/**
+	 * Generic method to send particular data to specified test plan
+	 * @param key a key
+	 * @param value an object value
+	 */
+	public void set(String key, Object value);
 }

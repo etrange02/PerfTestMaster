@@ -2,6 +2,14 @@ package gui;
 
 import javax.swing.table.AbstractTableModel;
 
+import tools.GUIConstants;
+
+/**
+ * 
+ * @author David Lecoconnier david.lecoconnier@gmail.com
+ * @author Jean-Luc Amitousa-Mankoy jeanluc.amitousa.mankoy@gmail.com
+ * @version 1.0
+ */
 public class PerfTestTableModel extends AbstractTableModel {
 	
 	private static final long serialVersionUID = -6144226754812127470L;
@@ -97,6 +105,15 @@ public class PerfTestTableModel extends AbstractTableModel {
 			temp[index] = o[columnIndex];
 		}
 		return temp;
+	}
+	
+	public void clear() {
+		this.data = new Object[0][0];
+	}
+	
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+	    return this.getColumnName(columnIndex).equals(GUIConstants.INSTRUCTION_EDITION);
 	}
 
 }

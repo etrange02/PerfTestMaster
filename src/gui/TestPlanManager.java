@@ -3,9 +3,16 @@ package gui;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+/**
+ * 
+ * @author David Lecoconnier david.lecoconnier@gmail.com
+ * @author Jean-Luc Amitousa-Mankoy jeanluc.amitousa.mankoy@gmail.com
+ * @version 1.0
+ */
 public class TestPlanManager extends JPanel {
 
 	private static final long serialVersionUID = 4272011867794858445L;
@@ -14,6 +21,7 @@ public class TestPlanManager extends JPanel {
 	
 	public TestPlanManager() {
 		super();
+		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		this.mapNodePanel = new HashMap<DefaultMutableTreeNode, JPanel>();
 	}
 
@@ -34,6 +42,14 @@ public class TestPlanManager extends JPanel {
 			panel.setVisible(false);
 		}
 		this.mapNodePanel.put(node, panel);
+	}
+	
+	public boolean contains(DefaultMutableTreeNode treeNode) {
+		return this.mapNodePanel.containsKey(treeNode);
+	}
+	
+	public boolean contains(JPanel panel) {
+		return this.mapNodePanel.containsValue(panel);
 	}
 	
 	public void showAssociatedPanel(DefaultMutableTreeNode node) {

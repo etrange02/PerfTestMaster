@@ -3,34 +3,35 @@
  */
 package controls.cslavemanagement.interfaces;
 
-/** 
- * <!-- begin-UML-doc -->
- * <!-- end-UML-doc -->
- * @author Etrange02
- * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+/**
+ * 
+ * @author David Lecoconnier david.lecoconnier@gmail.com
+ * @author Jean-Luc Amitousa-Mankoy jeanluc.amitousa.mankoy@gmail.com
+ * @version 1.0
  */
 public interface ISlave {
-	/** 
-	 * <!-- begin-UML-doc -->
-	 * <!-- end-UML-doc -->
-	 * @return
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+
+	/**
+	 * Returns the name of the Slave
+	 * @return the name
 	 */
 	public String getName();
 
-	/** 
-	 * <!-- begin-UML-doc -->
-	 * <!-- end-UML-doc -->
-	 * @return
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Returns the address of the slave
+	 * @return the address
 	 */
 	public String getAddress();
 
-	/** 
-	 * <!-- begin-UML-doc -->
-	 * <!-- end-UML-doc -->
-	 * @return
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Indicates if the selected test has been deployed on this slave
+	 * @return true if deployed, false otherwise
 	 */
 	public boolean isDeployed();
+	
+	/**
+	 * Indicates if the selected test is running on this slave
+	 * @return true if running, false otherwise
+	 */
+	public boolean isRunning();
 }

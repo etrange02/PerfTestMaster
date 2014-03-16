@@ -8,24 +8,40 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
+import javax.swing.tree.TreePath;
 
 import tools.GUIConstants;
+import tools.GUIFactory;
+import tools.widgets.TestCreator;
+import tools.widgets.TestPlanCreator;
+import controls.ctestplanmanagement.interfaces.ITestPlanManagement;
 
+/**
+ * 
+ * @author David Lecoconnier david.lecoconnier@gmail.com
+ * @author Jean-Luc Amitousa-Mankoy jeanluc.amitousa.mankoy@gmail.com
+ * @version 1.0
+ */
 public class Frame extends JFrame {
 
 	private static final long serialVersionUID = 4743270606172960944L;
 	private SlavesPanel slavesPanel;
 	private TestPlanManager testPlanManager;
 	private TestPlanTree testPlanTree;
+	private ITestPlanManagement testPlanManagement;
 
-	public Frame() {
+	public Frame(ITestPlanManagement testPlanManagement) {
 		super();
+		this.testPlanManagement = testPlanManagement;
 		this.initialize();
 		this.setVisible(true);
 	}
@@ -118,7 +134,81 @@ public class Frame extends JFrame {
 	}
 	
 	private void initToolsBar() {
-		
+		JToolBar toolBar = new JToolBar();
+		this.add(toolBar, BorderLayout.PAGE_START);
+
+		JButton createButton = new JButton("Create");
+		JButton runButton = new JButton("Run");
+		JButton addButton = new JButton("Add");
+		JButton stopButton = new JButton("Stop");
+		JButton deployButton = new JButton("Deploy");
+		JButton monitorButton = new JButton("Monitor");
+
+
+		createButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (null == testPlanManagement.getTestPlan()) {
+					newTestPlanMenuItemAction(e);
+				} else {
+					newTestMenuItemAction(e);
+				}
+			}
+		});
+		runButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TreePath[] paths = testPlanTree.getSelectionPaths();
+				if (null == paths)// || paths.length <= 1)
+					return;
+				if (paths[0].getPathCount() < 2)
+					return;
+				System.out.println("Run the test '" + paths[0].getPath()[1] + "'");
+				System.out.println("Pust all selected slaves in running mode");
+			}
+		});
+		addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Puts a slave in running mode");
+			}
+		});
+		stopButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("stop the current running test");
+				testPlanManagement.getSlaveManagement().stop();
+			}
+		});
+		deployButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TreePath path = testPlanTree.getSelectionPath();
+				if (null == path)// || paths.length <= 1)
+					return;
+				if (path.getPathCount() < 2)
+					return;
+				System.out.println(testPlanManagement.sendTest(path.getPath()[1].toString()));
+				System.out.println("Deploy the test '" + path.getPath()[1] + "'");
+			}
+		});
+		monitorButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (null == testPlanManagement.getSlaveManagement().getDeployedTestName())
+					return;
+				System.out.println(testPlanManagement.getSlaveManagement().getDeployedTestName());
+				testPlanTree.selectNodeByName(testPlanManagement.getSlaveManagement().getDeployedTestName());
+			}
+		});
+		createButton.setToolTipText("Open a dialog to create a test plan or a test");
+		runButton.setToolTipText("Scalability test : run some slaves");
+		addButton.setToolTipText("Workload test : run another slave");
+		stopButton.setToolTipText("Stop the running test on slaves");
+		deployButton.setToolTipText("Deploy on slave the test selected in the tree");
+		monitorButton.setToolTipText("Show the monitoring panel of the deployed test");
+
+		toolBar.add(createButton);
+		toolBar.add(runButton);
+		toolBar.add(addButton);
+		toolBar.add(stopButton);
+		toolBar.add(deployButton);
+		toolBar.add(monitorButton);
+		toolBar.setVisible(true);
 	}
 	
 	private void initPanels() {
@@ -132,7 +222,7 @@ public class Frame extends JFrame {
 		});
 		
 		this.testPlanManager = new TestPlanManager();
-		this.testPlanTree = new TestPlanTree(this.testPlanManager);
+		this.testPlanTree = new TestPlanTree(this, this.testPlanManager, this.testPlanManagement);
 		this.testPlanTree.addFocusListener(new FocusListener() {
 			public void focusLost(FocusEvent e) {				
 			}
@@ -146,9 +236,10 @@ public class Frame extends JFrame {
 		container.add(this.testPlanTree, BorderLayout.CENTER);
 		this.add(container, BorderLayout.WEST);
 		
-		this.slavesPanel = new SlavesPanel();
+		this.slavesPanel = new SlavesPanel(this.testPlanManagement.getSlaveManagement());
 		
 		JPanel center = new JPanel();
+		center.setLayout(new BoxLayout(center, BoxLayout.X_AXIS));
 		center.add(this.slavesPanel);
 		center.add(this.testPlanManager);
 		this.slavesPanel.setVisible(false);
@@ -171,30 +262,43 @@ public class Frame extends JFrame {
 	}
 	
 	private void newTestPlanMenuItemAction(ActionEvent e) {
-		System.exit(0);
+		TestPlanCreator creator = GUIFactory.testPlanCreator(this, "Test plan creation", true, this.testPlanManagement.getAvailableProtocols());
+		if (creator.showDialog()) {
+			if (null != this.testPlanManagement.addNewTestPlan(creator.getSelectedProtocol()));
+				System.out.println("newTestPlanMenuItemAction-" + creator.getSelectedProtocol());
+		}
 	}
 	
 	private void newTestMenuItemAction(ActionEvent e) {
-		System.exit(0);
+		TestCreator creator = GUIFactory.testCreator(this, "Test creator", true);
+		if (creator.showDialog()) {
+			if (creator.isScalabilityTest()) {
+				this.testPlanManagement.addNewScalabilityTest(creator.getTestName());
+			} else {
+				this.testPlanManagement.addNewWorkloadTest(creator.getTestName());
+			}
+			System.out.println("newTestMenuItemAction");
+		}
 	}
 	
 	private void saveMenuItemAction(ActionEvent e) {
-		System.exit(0);
+		System.out.println("saveMenuItemAction");
 	}
 	
 	private void saveAsMenuItemAction(ActionEvent e) {
-		System.exit(0);
+		System.out.println("saveAsMenuItemAction");
 	}
 	
 	private void openMenuItemAction(ActionEvent e) {
-		System.exit(0);
+		System.out.println("openMenuItemAction");
 	}
 	
 	private void userManualMenuItemAction(ActionEvent e) {
-		System.exit(0);
+		System.out.println("userManualMenuItemAction");
 	}
 	
 	private void aboutMenuItemAction(ActionEvent e) {
-		System.exit(0);
+		System.out.println("aboutMenuItemAction");
+		JOptionPane.showMessageDialog(null, "David & Jean-Luc", "About PerfTest", JOptionPane.PLAIN_MESSAGE);
 	}
 }

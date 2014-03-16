@@ -3,112 +3,100 @@
  */
 package controls.ctestplanmanagement;
 
+import gui.interfaces.TestPlanListenable;
+import gui.interfaces.TestPlanListener;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import shared.ITest;
-import controls.cslavemanagement.interfaces.ISlave;
 import controls.ctestplanmanagement.interfaces.ITestPlan;
 
-/** 
- * <!-- begin-UML-doc -->
- * <!-- end-UML-doc -->
- * @author Etrange02
- * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+/**
+ * 
+ * @author David Lecoconnier david.lecoconnier@gmail.com
+ * @author Jean-Luc Amitousa-Mankoy jeanluc.amitousa.mankoy@gmail.com
+ * @version 1.0
  */
-public abstract class AbstractTestPlan implements ITestPlan {
+public abstract class AbstractTestPlan implements ITestPlan, TestPlanListenable {
 
 	private String name;
-	private List<ISlave> iSlave;
-	private List<ITest> tests;
-	private List<ISlave> targets = null;
+	private List<AbstractMonitoredTest> tests;
+	private List<String> targets;
 	private int port;
+	private List<TestPlanListener> planTestListenerList;
 	
 	public AbstractTestPlan() {
-		this.iSlave = new ArrayList<>();
-		this.tests = new ArrayList<>();
-		this.targets = new ArrayList<>();
+		this.tests = new ArrayList<AbstractMonitoredTest>();
+		this.targets = new ArrayList<String>();
+		this.planTestListenerList = new ArrayList<TestPlanListener>();
 		this.port = 0;
+		this.name = "";
 	}
 
-	/** 
-	 * @return name
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
-	/** 
-	 * @param name name � d�finir
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Modifies the plan test name
+	 * @param name a name
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/** 
-	 * @return iSlave
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
-	public List<ISlave> getiSlave() {
-		return this.iSlave;
-	}
-
-	/** 
-	 * @param iSlave iSlave � d�finir
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
-	public void setiSlave(List<ISlave> iSlave) {
-		this.iSlave = iSlave;
-	}
-
-	/** 
-	 * @return test
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
-	public List<ITest> getTest() {
+	public List<AbstractMonitoredTest> getTests() {
 		return this.tests;
 	}
 
-	/** 
-	 * @param test test � d�finir
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Modifies the list of created tests
+	 * @param tests a list
 	 */
-	public void setTest(List<ITest> test) {
-		this.tests = test;
+	public void setTests(List<AbstractMonitoredTest> tests) {
+		this.tests = tests;
 	}
 
-	/** 
-	 * @return targets
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
-	public List<ISlave> getTargets() {
+	public List<String> getTargets() {
 		return this.targets;
 	}
 
-	/** 
-	 * @param targets targets � d�finir
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Modifies the list of targets, which are the tested server
+	 * @param targets a list
 	 */
-	public void setTargets(List<ISlave> targets) {
+	public void setTargets(List<String> targets) {
 		this.targets = targets;
 	}
 
-	/** 
-	 * @return port
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
 	public int getPort() {
 		return port;
 	}
 
-	/** 
-	 * @param port port � d�finir
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Modifies the tested port
+	 * @param port the port
 	 */
 	public void setPort(int port) {
 		this.port = port;
+	}
+	
+	public void updatePlanTestNameList(String name) {
+		Iterator<TestPlanListener> iter = this.planTestListenerList.iterator();
+		while (iter.hasNext()) {
+			iter.next().updatePlanTestName(name);
+		}
+	}
+	
+	@Override
+	public void addTestPlanListener(TestPlanListener testPlanListener) {
+		this.planTestListenerList.add(testPlanListener);
+	}
+
+	@Override
+	public void removeTestPlanListener(TestPlanListener testPlanListener) {
+		this.planTestListenerList.remove(testPlanListener);
 	}
 
 }

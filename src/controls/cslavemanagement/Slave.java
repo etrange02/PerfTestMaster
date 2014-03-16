@@ -5,79 +5,90 @@ package controls.cslavemanagement;
 
 import controls.cslavemanagement.interfaces.ISlave;
 
-/** 
- * <!-- begin-UML-doc -->
- * <!-- end-UML-doc -->
- * @author Etrange02
- * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+/**
+ * 
+ * @author David Lecoconnier david.lecoconnier@gmail.com
+ * @author Jean-Luc Amitousa-Mankoy jeanluc.amitousa.mankoy@gmail.com
+ * @version 1.0
  */
 public class Slave implements ISlave {
 
 	private String name;
 	private String address;
 	private boolean deployed;
+	private boolean running;
 	private TCPConnection TCPClientSlave;
-
-	/** 
-	 * @return name
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
-	public String getName() {
-		return name;
+	
+	public Slave() {
+		this.deployed = false;
+		this.running = false;
+		this.name = "";
+		this.address = "";
 	}
 
-	/** 
-	 * @param name name � d�finir
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	public String getName() {
+		return getAddress();//name;
+	}
+
+	/**
+	 * Modifies the name of the slave
+	 * @param name a name
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/** 
-	 * @return address
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
 	public String getAddress() {
 		return address;
 	}
 
-	/** 
-	 * @param address address � d�finir
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Modifies the address
+	 * @param address the address
 	 */
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	/** 
-	 * @return deployed
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
+	
 	public boolean isDeployed() {
 		return this.deployed;
 	}
 
-	/** 
-	 * @param deployed deployed � d�finir
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Modifies the deployment state
+	 * @param deployed a deployment state
 	 */
 	public void setDeployed(boolean deployed) {
 		this.deployed = deployed;
 	}
+	
+	public boolean isRunning() {
+		return this.running;
+	}
+	
+	/**
+	 * Modifies the running state
+	 * @param running a running state
+	 */
+	public void setRunning(boolean running) {
+		this.running = running;
+	}
 
-	/** 
-	 * @return TCPClientSlave
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Returns the TCPConnection associated to the slave application
+	 * @return the TCPConnection
 	 */
 	public TCPConnection getTCPClientSlave() {
 		return TCPClientSlave;
 	}
 
-	/** 
-	 * @param TCPClientSlave TCPClientSlave � d�finir
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Modifies the associated TCPConnection to slave application
+	 * @param TCPClientSlave
 	 */
 	public void setTCPClientSlave(TCPConnection TCPClientSlave) {
 		this.TCPClientSlave = TCPClientSlave;
+		if (this.TCPClientSlave.getSlave() != this)
+			this.TCPClientSlave.setSlave(this);
 	}
 }

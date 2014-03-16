@@ -1,11 +1,18 @@
 package tools;
 
+/**
+ * 
+ * @author David Lecoconnier david.lecoconnier@gmail.com
+ * @author Jean-Luc Amitousa-Mankoy jeanluc.amitousa.mankoy@gmail.com
+ * @version 1.0
+ */
 public class GUIConstants {
 
 	//// Frame parameters
 	public static String FRAME_TITLE = "Perf Test";
 	public static int FRAME_SIZE_X = 800;
 	public static int FRAME_SIZE_Y = 600;
+	public static float FRAME_TITLE_FONT_SIZE = 20.0f;
 	
 	//// Menu parameters
 	public static String MENU_FILE = "File";
@@ -50,7 +57,7 @@ public class GUIConstants {
 	
 	//// Instruction panel
 	public static String INSTRUCTION_ID = "Id";
-	public static String INSTRUCTION_TYPE = "Type";
+	public static String INSTRUCTION_NAME = "Name";
 	public static String INSTRUCTION_EDITION = "Edition";
 	public static String INSTRUCTION_EDIT = "Edit";
 	public static String INSTRUCTION_ADD = "Add";

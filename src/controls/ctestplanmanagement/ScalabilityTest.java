@@ -3,62 +3,53 @@
  */
 package controls.ctestplanmanagement;
 
-import java.util.List;
 
-import shared.AbstractTest;
-import shared.IInstruction;
-
-/** 
- * <!-- begin-UML-doc -->
- * <!-- end-UML-doc -->
- * @author Etrange02
- * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+/**
+ * 
+ * @author David Lecoconnier david.lecoconnier@gmail.com
+ * @author Jean-Luc Amitousa-Mankoy jeanluc.amitousa.mankoy@gmail.com
+ * @version 1.0
  */
-public class ScalabilityTest extends AbstractTest {
+public class ScalabilityTest extends AbstractMonitoredTest {
 	
 	private static final long serialVersionUID = -8919264177566199550L;
 	private ScalabilityMonitor scalabilityMonitor;
+	private int affectedSlaveCount;
+	
+	public ScalabilityTest(String name) {
+		super(name);
+		this.affectedSlaveCount = 0;
+	}
 
-	/** 
-	 * @return scalabilityMonitor
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Returns the associated ScalabilityMonitor
+	 * @return a ScalabilityMonitor
 	 */
 	public ScalabilityMonitor getScalabilityMonitor() {
 		return scalabilityMonitor;
 	}
 
-	/** 
-	 * @param scalabilityMonitor scalabilityMonitor � d�finir
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Modifies the associated ScalabilityMonitor
+	 * @param scalabilityMonitor a ScalabilityMonitor
 	 */
 	public void setScalabilityMonitor(ScalabilityMonitor scalabilityMonitor) {
 		this.scalabilityMonitor = scalabilityMonitor;
 	}
 
-	/** 
-	 * (non-Javadoc)
-	 * @see ITest#getInstructions()
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
-	public List<IInstruction> getInstructions() {
-		return null;
-	}
-
-	/** 
-	 * (non-Javadoc)
-	 * @see ITest#writeJSONString()
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
 	public String writeJSONString() {
 		return null;
 	}
 
-	/** 
-	 * (non-Javadoc)
-	 * @see ITest#getMonitor()
-	 * @generated "UML vers Java (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
 	public Monitor getMonitor() {
-		return null;
+		return getScalabilityMonitor();
+	}
+
+	public int getAffectedSlaveCount() {
+		return affectedSlaveCount;
+	}
+
+	public void setAffectedSlaveCount(int affectedSlaveCount) {
+		this.affectedSlaveCount = affectedSlaveCount;
 	}
 }
