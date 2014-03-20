@@ -647,32 +647,4 @@ public class TestPlanManagementFacade implements ITestPlanManagement {
 		test.updateSelectedTargets(this.getTestPlan().getTargets(), test.getSelectedTargets());
 	}
 
-	@Override
-	public void runSlave() {
-		// TODO Auto-generated method stub
-		String name = this.getSlaveManagement().getDeployedTestName();
-		if (name.isEmpty())
-			return;
-		
-		Iterator<AbstractMonitoredTest> iter = this.getTestPlan().getTests().iterator();
-		AbstractMonitoredTest test = null;
-		boolean cont = true;
-		while (iter.hasNext() && cont) {
-			test = iter.next();
-			if (test.getName().equals(name)) {
-				cont = false;
-			}
-		}
-		
-		if (test instanceof ScalabilityTest) {
-			this.getSlaveManagement().runSlaves(((ScalabilityTest) test).getAffectedSlaveCount(), test.getSelectedTargets(), this.getTestPlan().getPort());
-		}
-	}
-
-	@Override
-	public void runAnotherSlave() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

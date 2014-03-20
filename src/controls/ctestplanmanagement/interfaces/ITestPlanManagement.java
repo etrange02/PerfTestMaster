@@ -229,12 +229,6 @@ public interface ITestPlanManagement extends TestPlanListenable, TestListenable,
 	 * @param selectedTargets a list of targets
 	 */
 	public void setSelectedTargets(AbstractMonitoredTest test, List<String> selectedTargets);
-	
-	/**
-	 * Runs slaves for a scalability test
-	 */
-	public void runSlave();
-	
-	public void runAnotherSlave();
+
 	
 }
