@@ -9,7 +9,7 @@ import gui.interfaces.TestPlanPanelListenable;
 
 import java.util.List;
 
-import shared.IInstruction;
+import shared.interfaces.IInstruction;
 import controls.cslavemanagement.interfaces.ISlaveManagement;
 import controls.ctestplanmanagement.AbstractMonitoredTest;
 import controls.ctestplanmanagement.AbstractTestPlan;
@@ -229,5 +229,12 @@ public interface ITestPlanManagement extends TestPlanListenable, TestListenable,
 	 * @param selectedTargets a list of targets
 	 */
 	public void setSelectedTargets(AbstractMonitoredTest test, List<String> selectedTargets);
+	
+	/**
+	 * Runs slaves for a scalability test
+	 */
+	public void runSlave();
+	
+	public void runAnotherSlave();
 	
 }

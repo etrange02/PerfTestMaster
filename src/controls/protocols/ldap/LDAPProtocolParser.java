@@ -7,12 +7,15 @@ import java.io.IOException;
 import java.util.List;
 
 import shared.AbstractInstruction;
-import constants.protocols.ldap.LDAPConstants;
-import controls.ctestplanmanagement.AbstractMonitoredTest;
+import shared.interfaces.IInstruction;
+import shared.interfaces.ITest;
 import controls.ctestplanmanagement.AbstractTestPlan;
 import controls.ctestplanmanagement.ProtocolParser;
 import controls.ctestplanmanagement.TCPProxy;
+import controls.ctestplanmanagement.interfaces.ITestPlan;
 import controls.ctestplanmanagement.interfaces.ITestPlanManagement;
+import controls.protocols.AbstractClientForBlankTest;
+import controls.protocols.ldap.instructions.LDAPInstruction;
 
 /**
  * 
@@ -24,21 +27,12 @@ public class LDAPProtocolParser extends ProtocolParser {
 
 	@Override
 	public String getProtocolName() {
-		return "LDAP";
+		return shared.protocols.ldap.LDAPConstants.PROTOCOL_NAME;
 	}
 
 	@Override
 	public AbstractInstruction createNewInstruction() {
 		return new LDAPInstruction();
-	}
-
-	/**
-	 * Useless ????
-	 */
-	@Override
-	public AbstractMonitoredTest createNewTest() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -49,9 +43,21 @@ public class LDAPProtocolParser extends ProtocolParser {
 	@Override
 	public TCPProxy createNewTCPProxy(
 			String hostname, int port,
-			List<AbstractInstruction>instructions) throws IOException {
+			List<IInstruction>instructions) throws IOException {
 		
 		return new LDAP_TCPProxy(hostname,port,instructions);
+	}
+	
+	@Override
+	public AbstractClientForBlankTest createNewClientForBlankTest(
+			ITestPlan testPlan, String hostname, ITest test) {
+
+		if(testPlan instanceof LDAPPlanTest) {
+			return new LDAPClientForBlankTest(
+					(LDAPPlanTest)testPlan, hostname, test);
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -75,5 +81,4 @@ public class LDAPProtocolParser extends ProtocolParser {
 	public AbstractTestPlanPanel createNewTestPlanPanel(ITestPlanManagement testPlanManagement) {
 		return new LDAPTestPlanPanel(testPlanManagement);
 	}
-
 }

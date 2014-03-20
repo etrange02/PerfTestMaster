@@ -8,8 +8,12 @@ import gui.panels.AbstractTestPlanPanel;
 import java.io.IOException;
 import java.util.List;
 
+import controls.ctestplanmanagement.interfaces.ITestPlan;
 import controls.ctestplanmanagement.interfaces.ITestPlanManagement;
+import controls.protocols.AbstractClientForBlankTest;
 import shared.AbstractInstruction;
+import shared.interfaces.IInstruction;
+import shared.interfaces.ITest;
 
 /**
  * 
@@ -42,13 +46,6 @@ public abstract class ProtocolParser {
 	public abstract AbstractInstruction createNewInstruction();
 
 	/**
-	 * Useless ?? Returns a new instance of Test which is specified to the implemented
-	 * protocol
-	 * @return a new test
-	 */
-	public abstract AbstractMonitoredTest createNewTest();
-
-	/**
 	 * Returns a new instance of plan test which is specified to the implemented
 	 * protocol
 	 * @return a new plan test
@@ -65,7 +62,17 @@ public abstract class ProtocolParser {
 	 */
 	public abstract TCPProxy createNewTCPProxy(
 			String hostname, int port,
-			List<AbstractInstruction>instructions) throws IOException;
+			List<IInstruction>instructions) throws IOException;
+	
+	/**
+	 * Create a client that going to run the test for blanck tests.
+	 * @param testPlan the testPlan associated with the test
+	 * @param hostname the targeted-server hostname
+	 * @param test
+	 * @return the created client
+	 */
+	public abstract AbstractClientForBlankTest createNewClientForBlankTest(
+			ITestPlan testPlan, String hostname, ITest test);
 
 	/**
 	 * Returns a TestPlan which has been decoded from a JSON object and which 

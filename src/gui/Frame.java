@@ -26,7 +26,7 @@ import tools.widgets.TestPlanCreator;
 import controls.ctestplanmanagement.interfaces.ITestPlanManagement;
 
 /**
- * 
+ * Main frame
  * @author David Lecoconnier david.lecoconnier@gmail.com
  * @author Jean-Luc Amitousa-Mankoy jeanluc.amitousa.mankoy@gmail.com
  * @version 1.0
@@ -39,6 +39,10 @@ public class Frame extends JFrame {
 	private TestPlanTree testPlanTree;
 	private ITestPlanManagement testPlanManagement;
 
+	/**
+	 * Constructor
+	 * @param testPlanManagement a testPlanManagement
+	 */
 	public Frame(ITestPlanManagement testPlanManagement) {
 		super();
 		this.testPlanManagement = testPlanManagement;
@@ -161,12 +165,14 @@ public class Frame extends JFrame {
 					return;
 				if (paths[0].getPathCount() < 2)
 					return;
+				testPlanManagement.runSlave();
 				System.out.println("Run the test '" + paths[0].getPath()[1] + "'");
 				System.out.println("Pust all selected slaves in running mode");
 			}
 		});
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				testPlanManagement.runAnotherSlave();
 				System.out.println("Puts a slave in running mode");
 			}
 		});
@@ -183,7 +189,10 @@ public class Frame extends JFrame {
 					return;
 				if (path.getPathCount() < 2)
 					return;
-				System.out.println(testPlanManagement.sendTest(path.getPath()[1].toString()));
+				
+				
+				//TODO System.out.println(testPlanManagement.sendTest(path.getPath()[1].toString()));
+				System.out.println(testPlanManagement.deployTest(path.getPath()[1].toString()));
 				System.out.println("Deploy the test '" + path.getPath()[1] + "'");
 			}
 		});

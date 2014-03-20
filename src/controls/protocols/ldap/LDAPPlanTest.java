@@ -16,7 +16,6 @@ import controls.ctestplanmanagement.AbstractTestPlan;
 /**
  * 
  * @author David Lecoconnier david.lecoconnier@gmail.com
- * @author Jean-Luc Amitousa-Mankoy jeanluc.amitousa.mankoy@gmail.com
  * @version 1.0
  */
 public class LDAPPlanTest extends AbstractTestPlan implements LDAPTestPlanPanelListenable {
@@ -53,22 +52,30 @@ public class LDAPPlanTest extends AbstractTestPlan implements LDAPTestPlanPanelL
 			return;
 		
 		switch (key) {
-			case "ROOT":
+			case LDAPConstants.LDAP_ROOT_PROPERTY:
 				this.setRoot(value.toString());
 				break;
-			case "LOGIN":
+			case LDAPConstants.LDAP_LOGIN_PROPERTY:
 				this.setLogin(value.toString());
 				break;
-			case "PASSWORD":
+			case LDAPConstants.LDAP_PASSWORD_PROPERTY:
 				this.setPassword(value.toString());
 				break;
 		}
 	}
 
+	/**
+	 * Specified - Returns the root value
+	 * @return the root value
+	 */
 	public String getRoot() {
 		return root;
 	}
 
+	/**
+	 * Specified - Modifies the root value
+	 * @param root a root value
+	 */
 	public void setRoot(String root) {
 		if (null == root)
 			return;
@@ -80,10 +87,18 @@ public class LDAPPlanTest extends AbstractTestPlan implements LDAPTestPlanPanelL
 		}
 	}
 
+	/**
+	 * Specified - Returns the login
+	 * @return a login
+	 */
 	public String getLogin() {
 		return login;
 	}
 
+	/**
+	 * Modifies the login
+	 * @param login a login
+	 */
 	public void setLogin(String login) {
 		if (null == login)
 			return;
@@ -95,10 +110,18 @@ public class LDAPPlanTest extends AbstractTestPlan implements LDAPTestPlanPanelL
 		}
 	}
 
+	/**
+	 * Specified - Returns the password
+	 * @return the password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * Specified - Modifies the password
+	 * @param password a password
+	 */
 	public void setPassword(String password) {
 		if (null == password)
 			return;
